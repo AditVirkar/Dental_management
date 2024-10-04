@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Patients{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Patients List</h2>
+
+    <div class="text-end mb-3">
+        <form action="{% url 'add_patient' %}" method="get">
+            <button type="submit" class="btn btn-outline-primary">Add Patient</button>
+        </form>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">Last Visit Date</th>
+                <th scope="col">Last Visit Doctor</th>
+                <th scope="col">Last Visit Procedures</th>
+                <th scope="col">Next Appointment Date</th>
+                <th scope="col">Next Appointment Doctor</th>
+                <th scope="col">Next Appointment Procedures</th>
+                <th scope="col">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient, details in patient_visits.items %}
+            <tr>
+                <td>{{ patient.name }}</td>
+                <td>{{ patient.date_of_birth|date:"Y-m-d" }}</td>
+
+                <td>
+                    {% if details.last_visit %}
+                    {{ details.last_visit.date|date:"Y-m-d H:i" }}
+                    {% else %}
+                    No last visit
+                    {% endif %}
+                </td>
+
+                <td>{{ details.last_visit_doctor_name }}</td>
+
+                <td>
+                    {% if details.last_visit and details.last_visit.procedures.exists %}
+                    {{ details.last_visit.procedures.all|join:", " }}
+                    {% else %}
+                    N/A
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if details.next_visit %}
+                    {{ details.next_visit.date|date:"Y-m-d H:i" }}
+                    {% else %}
+                    No next appointment
+                    {% endif %}
+                </td>
+
+                <td>{{ details.next_visit_doctor_name }}</td>
+
+                <td>
+                    {% if details.next_visit and details.next_visit.procedure %}
+                    {{ details.next_visit.procedure }}
+                    {% else %}
+                    N/A
+                    {% endif %}
+                </td>
+
+                <td><a href="{% url 'patient_detail' patient.id %}" class="btn btn-info">View Details</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9" class="text-center">No patients available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

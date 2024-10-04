@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Doctor{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-8">
+            <div class="card p-4 shadow-lg">
+                <h2 class="text-center mb-4 text-primary">Edit Doctor</h2>
+
+                <div class="d-grid mb-3">
+                    <button type="button" class="btn btn-secondary" id="editButton">Edit</button>
+                </div>
+
+                <form method="POST" action="{% url 'doctor_detail' doctor.id %}" id="doctorForm">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        <label for="npi" class="form-label">NPI (National Provider Identifier):</label>
+                        <input type="text" class="form-control" id="npi" name="npi" value="{{ doctor.npi }}" required disabled>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ doctor.name }}" required disabled>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="phone_number" class="form-label">Phone Number:</label>
+                        <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ doctor.phone_number }}" required disabled>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ doctor.email }}" disabled>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="specialty" class="form-label">Specialty:</label>
+                        <select class="form-control" id="specialty" name="specialty" disabled>
+                            {% for choice in specialities %}
+                            <option value="{{ choice.name }}" {% if doctor.specialties == choice.name %}selected{% endif %}>
+                                {{ choice.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" disabled id="submitButton">Update Doctor</button>
+                    </div>
+                </form>
+
+                <h3 class="mt-4 text-primary">Affiliated Clinics</h3>
+                <ul class="list-group mb-4">
+                    {% for clinic in clinics %}
+                    <li class="list-group-item">{{ clinic.name }} ({{ clinic.city }}, {{ clinic.state }})</li>
+                    {% empty %}
+                    <li class="list-group-item text-muted">No affiliated clinics available.</li>
+                    {% endfor %}
+                </ul>
+
+                <h3 class="text-primary">Affiliated Patients</h3>
+                <ul class="list-group">
+                    {% for patient in patients %}
+                    <li class="list-group-item">{{ patient.name }}</li>
+                    {% empty %}
+                    <li class="list-group-item text-muted">No affiliated patients available.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('editButton').onclick = function () {
+        var inputs = document.querySelectorAll('#doctorForm input, #doctorForm select');
+        inputs.forEach(function (input) {
+            input.disabled = false;
+        });
+
+        document.getElementById('submitButton').disabled = false;
+
+        this.textContent = 'Cancel';
+        this.onclick = function () {
+            inputs.forEach(function (input) {
+                input.disabled = true;
+            });
+            document.getElementById('submitButton').disabled = true;
+            this.textContent = 'Edit';
+        };
+    };
+</script>
+{% endblock %}

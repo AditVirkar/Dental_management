@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Doctors{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Doctors List</h2>
+    <div class="text-end mb-3">
+        <form action="{% url 'add_doctor' %}" method="get">
+            <button type="submit" class="btn btn-outline-primary">Add Doctor</button>
+        </form>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">NPI</th>
+                <th scope="col">Name</th>
+                <th scope="col">Specialties</th>
+                <th scope="col">Affiliated Clinics</th>
+                <th scope="col">Affiliated Patients</th>
+                <th scope="col">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doctor in doctors %}
+            <tr>
+                <td>{{ doctor.doctor.npi }}</td>
+                <td>{{ doctor.doctor.name }}</td>
+                <td>{{ doctor.doctor.get_specialties_display }}</td>
+                <td>{{ doctor.doctor.clinic_count }}</td>
+                <td>{{ doctor.patient_count }}</td>
+                <td><a href="{% url 'doctor_detail' doctor.doctor.id %}" class="btn btn-info">View Details</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No doctors available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

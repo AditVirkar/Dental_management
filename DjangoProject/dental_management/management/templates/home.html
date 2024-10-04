@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-6">
+            <div class="card p-4 shadow-lg">
+                <h2 class="text-center mb-4 text-primary">Welcome, {{ user.username }}</h2>
+
+                <div class="d-grid gap-3 mb-4">
+                    <form action="{% url 'clinic_list' %}" method="get">
+                        <button type="submit" class="btn btn-outline-primary w-100">Clinics</button>
+                    </form>
+
+                    <form action="{% url 'doctor_list' %}" method="get">
+                        <button type="submit" class="btn btn-outline-primary w-100">Doctors</button>
+                    </form>
+
+                    <form action="{% url 'patient_list' %}" method="get">
+                        <button type="submit" class="btn btn-outline-primary w-100">Patients</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
