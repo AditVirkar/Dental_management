@@ -13,13 +13,13 @@ This is a Django-based Dental Management System designed to manage patients, doc
 ### Installation
 
 1. **Clone the repository**:
-   git clone https://github.com/AditVirkar/dental-management-system.git
-   cd dental-management-system
+   - git clone https://github.com/AditVirkar/dental-management-system.git
+   - cd dental-management-system
 
 2. **Create a virtual environment**:
-   python -m venv env
-   source env/bin/activate  # For Linux/Mac
-   env\Scripts\activate     # For Windows
+   - python -m venv env
+   - source env/bin/activate  # For Linux/Mac
+   - env\Scripts\activate     # For Windows
 
 3. **Install dependencies**:
    #### Install Django
